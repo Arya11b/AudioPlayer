@@ -23,7 +23,10 @@ function init(){
     camera.position.y = 15;
     camera.position.z = 15;
     camera.lookAt(scene.position);
+    // adding objects
     scene.add(spotlight());
+    scene.add(particleSystem("pm1.jpg"));
+    scene.add(particleSystem("pm2.png"));
     //
     document.body.appendChild(renderer.domElement);
     //
@@ -57,6 +60,33 @@ function showVertices(mesh) {
         vertexMesh.position = vertex;
         scene.add(vertexMesh);
     });
+}
+function setUpAudio() {
+    context = new AudioContext();
+    sourceNode = context.createBufferSource();
+    splitter = context.createChannelSplitter();
+    analyser = context.createAnalyser();
+    // This is a value between 0 and 1, where 0 represents no time averaging with the last analysis's frame. The default value is 0.8.
+    analyser.smoothingTimeConstant = 0.4;
+    // fast fourier transform size must be in power of 2 unless an error is thrown
+    analyser.fftSize = 1024;
+    analyser2 = context.createAnalyser();
+    analyser2.smoothingTimeConstant = 0.4;
+    analyser2.fftSize = 1024;
+    sourceNode.connect(splitter);
+    splitter.connect(analyser, 0);
+    splitter.connect(analyser2, 1);
+    sourceNode.connect(context.destination);
+}
+function particleSystem(particleTexture) {
+    var boxGeo = new THREE.BoxGeometry(4,7,4,15,25,15);
+    var particleMat = new THREE.ParticleSystemMaterial();
+    particleMat.map = THREE.ImageUtils.loadTexture("./assets/textures/" + particleTexture);
+    // This property defines how the particle color or the texture blends together with the color of the pixels that are behind it.
+    particleMat.blending = THREE.AdditiveBlending;
+    particleMat.transparent = true;
+    var ps = new THREE.ParticleSystem(boxGeo,particleMat);
+    return ps;
 }
 window.onload = init;
 window.addEventListener('resize',resize,false);
