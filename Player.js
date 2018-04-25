@@ -38,7 +38,7 @@ function init(){
     //
     setUpAudio();
     render();
-    loadAudio("./assets/Audio/test2.flac");
+    loadAudio("./assets/Audio/test.mp3");
 }
 function render() {
     c++;
