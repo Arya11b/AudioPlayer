@@ -36,9 +36,11 @@ function init(){
     //
     document.body.appendChild(renderer.domElement);
     //
+}
+function play(songPath) {
     setUpAudio();
     render();
-    loadAudio("./assets/Audio/test.mp3");
+    loadAudio(songPath);
 }
 function render() {
     c++;
@@ -171,7 +173,7 @@ function updateWave() {
     var array = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteTimeDomainData(array);
     var particleMat = new THREE.ParticleSystemMaterial();
-    particleMat.map = THREE.ImageUtils.loadTexture("./assets/textures/pm3.png");
+    particleMat.map = THREE.ImageUtils.loadTexture("./assets/textures/pm4.jpg");
     // This property defines how the particle color or the texture blends together with the color of the pixels that are behind it.
     particleMat.blending = THREE.AdditiveBlending;
     particleMat.transparent = true;
